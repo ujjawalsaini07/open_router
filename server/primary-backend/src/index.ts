@@ -1,0 +1,34 @@
+import "dotenv/config";
+import express from "express";
+import type { Server } from "node:http";
+import cookieParser from "cookie-parser";
+
+
+import {router as authRouter} from "./routes/authRoutes.ts"
+
+
+const port: number = Number(process.env.PORT) || 3000;
+const app = express();
+
+
+app.use(express.json());
+app.use(cookieParser());
+app.use("/auth" , authRouter);
+
+
+
+
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        msg: "server is healthy"
+    });
+});
+
+
+const server: Server = app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
+
+server.on("error", (error) => {
+    console.error("Server error:", error);
+});
