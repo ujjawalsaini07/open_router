@@ -5,7 +5,8 @@ import cookieParser from "cookie-parser";
 
 
 import {router as authRouter} from "./routes/authRoutes.ts"
-
+import {router as apiRouter } from "./routes/apiRoutes.ts";
+import { errorHandler } from "./middleware/errorHandler.ts";
 
 const port: number = Number(process.env.PORT) || 3000;
 const app = express();
@@ -13,9 +14,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+
+
 app.use("/auth" , authRouter);
 
 
+app.use("/api",apiRouter);
 
 
 app.get("/health", (req, res) => {
@@ -24,6 +28,7 @@ app.get("/health", (req, res) => {
     });
 });
 
+app.use(errorHandler);
 
 const server: Server = app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
