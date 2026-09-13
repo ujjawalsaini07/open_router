@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import {router as authRouter} from "./routes/authRoutes.ts"
 import {router as apiRouter } from "./routes/apiRoutes.ts";
+import {router as onrampRouter } from "./routes/transactionRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 
 const port: number = Number(process.env.PORT) || 3000;
@@ -20,6 +21,8 @@ app.use("/auth" , authRouter);
 
 
 app.use("/api",apiRouter);
+
+app.use("/payments", onrampRouter);
 
 
 app.get("/health", (req, res) => {
