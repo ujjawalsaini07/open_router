@@ -1,5 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../../generated/prisma/client.ts";
+import { PrismaClient } from "@repo/db";
+
 
 const MAX_RETRIES = 5;
 const INITIAL_RETRY_DELAY = 2000;

@@ -1,0 +1,9 @@
+{
+  "name": "open-router-real",
+  "private": true,
+  "workspaces": [
+    "db",
+    "api-backend",
+    "primary-backend"
+  ]
+}
