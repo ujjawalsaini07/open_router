@@ -10,6 +10,7 @@ import {router as companyRouter } from "./routes/companyRoutes.ts";
 import {router as modelRouter } from "./routes/modelRoutes.ts";
 import {router as modelProviderMappingRouter } from "./routes/modelProviderMappingRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
+import { requestLogger } from "./middleware/requestLogger.ts";
 import connectDB from "./config/dbConfig.ts";
 
 const port: number = Number(process.env.PORT) || 3000;
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(requestLogger);
 
 
 app.use("/auth" , authRouter);
