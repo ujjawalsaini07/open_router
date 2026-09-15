@@ -44,7 +44,6 @@ export const getAllapis = async (req: Request, res: Response, next: NextFunction
 
         const where = {
             userId: req.user!.userId,
-            deleted: false
         };
 
         const [apis, totalApis] = await prisma.$transaction([
@@ -71,17 +70,16 @@ export const getApiById = async (req: Request, res: Response, next: NextFunction
         const parsedParams = apiIdParamSchema.safeParse(req.params);
 
         if (!parsedParams.success) {
-            res.status(400).json({ message: "Invalid id" });
+            res.status(400).json({ message: "Invalid api id" });
             return;
         }
 
         const { id } = parsedParams.data;
-
+        const userId = req.user!.userId;
         const api = await prisma.apiKey.findFirst({
             where: {
                 id,
-                userId: req.user!.userId,
-                deleted: false
+                userId: userId,
             },
             select: apiKeySelect
         });
@@ -129,7 +127,7 @@ export const updateApi = async (req: Request, res: Response, next: NextFunction)
         const parsedParams = apiIdParamSchema.safeParse(req.params);
 
         if (!parsedParams.success) {
-            res.status(400).json({ message: "Invalid id" });
+            res.status(400).json({ message: "Invalid api id" });
             return;
         }
 
@@ -138,14 +136,14 @@ export const updateApi = async (req: Request, res: Response, next: NextFunction)
         const parsedBody = updateApiSchema.safeParse(req.body);
 
         if (!parsedBody.success) {
-            res.status(400).json({ message: "Invalid api data" });
+            res.status(400).json({ message: "Invalid api update data" });
             return;
         }
 
         const { name, disabled } = parsedBody.data;
-
+        const userId = req.user!.userId;
         const existing = await prisma.apiKey.findFirst({
-            where: { id, userId: req.user!.userId, deleted: false }
+            where: { id, userId: userId}
         });
 
         if (!existing) {
@@ -163,7 +161,7 @@ export const updateApi = async (req: Request, res: Response, next: NextFunction)
             select: apiKeySelect
         });
 
-        res.json(api);
+        res.status(200).json({ msg: "Api updated successfully", api });
     } catch (error) {
         next(error);
     }
@@ -174,14 +172,14 @@ export const deleteApi = async (req: Request, res: Response, next: NextFunction)
         const parsedParams = apiIdParamSchema.safeParse(req.params);
 
         if (!parsedParams.success) {
-            res.status(400).json({ message: "Invalid id" });
+            res.status(400).json({ message: "Invalid Api id" });
             return;
         }
 
         const { id } = parsedParams.data;
-
+        const userId = req.user!.userId;
         const existing = await prisma.apiKey.findFirst({
-            where: { id, userId: req.user!.userId, deleted: false }
+            where: { id, userId: userId, deleted: false }
         });
 
         if (!existing) {
@@ -195,7 +193,7 @@ export const deleteApi = async (req: Request, res: Response, next: NextFunction)
             select: apiKeySelect
         });
 
-        res.json(api);
+        res.status(200).json({ msg: "Api deleted successfully", api });
     } catch (error) {
         next(error);
     }
