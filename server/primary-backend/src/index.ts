@@ -30,6 +30,8 @@ app.use("/payments", onrampRouter);
 
 app.use("/provider",providerRouter);
 app.use("/company", companyRouter);
+app.use("/model", modelRouter);
+app.use("/model-provider-mapping", modelProviderMappingRouter);
 
 app.get("/health", (req, res) => {
     res.status(200).json({
