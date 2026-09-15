@@ -4,4 +4,4 @@ import { getAllProviders, getProviderById } from "../controllers/providerControl
 export const router : Router = Router();
 
 router.get("/" , getAllProviders);
-router.get("/:providerId" , getProviderById);
+router.get("/:id" , getProviderById);

@@ -8,6 +8,7 @@ import {router as authRouter} from "./routes/authRoutes.ts"
 import {router as apiRouter } from "./routes/apiRoutes.ts";
 import {router as onrampRouter } from "./routes/transactionRoutes.ts";
 import {router as providerRouter } from "./routes/providerRoutes.ts";
+import {router as companyRouter } from "./routes/companyRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 
 const port: number = Number(process.env.PORT) || 3000;
@@ -26,6 +27,7 @@ app.use("/api",apiRouter);
 app.use("/payments", onrampRouter);
 
 app.use("/provider",providerRouter);
+app.use("/company", companyRouter);
 
 app.get("/health", (req, res) => {
     res.status(200).json({

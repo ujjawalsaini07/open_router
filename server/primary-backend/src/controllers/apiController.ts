@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express'
 import { z } from "zod";
 import { createApi as generateApikey } from "../service/apiService.ts";
 import { prisma } from '../config/dbConfig.ts';
+import { buildPaginationMeta, paginationSchema } from '../utils/paginationUtils.ts';
 
 const createApiSchema = z.object(
     {
@@ -32,14 +33,34 @@ const apiKeySelect = {
 
 export const getAllapis = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const apis = await prisma.apiKey.findMany({
-            where: {
-                userId: req.user!.userId,
-                deleted: false
-            },
-            select: apiKeySelect
+        const parsedQuery = paginationSchema.safeParse(req.query);
+
+        if (!parsedQuery.success) {
+            res.status(400).json({ message: "Invalid query parameters" });
+            return;
+        }
+
+        const { page, pageSize } = parsedQuery.data;
+
+        const where = {
+            userId: req.user!.userId,
+            deleted: false
+        };
+
+        const [apis, totalApis] = await prisma.$transaction([
+            prisma.apiKey.findMany({
+                where,
+                select: apiKeySelect,
+                skip: (page - 1) * pageSize,
+                take: pageSize
+            }),
+            prisma.apiKey.count({ where })
+        ]);
+
+        res.json({
+            items: apis,
+            pagination: buildPaginationMeta(page, pageSize, totalApis)
         });
-        res.json(apis);
     } catch (error) {
         next(error);
     }
