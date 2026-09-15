@@ -83,7 +83,7 @@ export const signupController = async (
     const token = createToken({ userId: newUser.id, email: newUser.email });
     res.cookie("token", token, cookieOptions);
     return res.status(200).json({
-      msg: "login successful",
+      msg: "signup successful",
       email: newUser.email,
     });
   } catch (error) {

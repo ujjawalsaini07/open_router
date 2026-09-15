@@ -5,7 +5,6 @@ import { buildPaginationMeta, paginationSchema } from '../utils/paginationUtils.
 
 
 const addCreditSchema = z.object({
-    userId: z.number(),
     amount: z.number().positive()
 });
 
@@ -15,11 +14,8 @@ export const addCredit = async (req: Request, res: Response, next: NextFunction)
             return res.status(400).json({ msg: 'Invalid request body' });
         }
 
-        const { userId, amount } = req.body;
-
-        if (userId !== req.user?.userId) {
-            return res.status(403).json({ msg: 'Unauthorized' });
-        }
+        const { amount } = req.body;
+        const userId = req.user!.userId;
         const user = await prisma.user.findUnique({ where: { id: userId } });
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
@@ -34,8 +30,8 @@ export const addCredit = async (req: Request, res: Response, next: NextFunction)
                 data: { credits: { increment: amount } },
             }),
         ]);
-
-        res.status(200).json({ msg: 'Credit added successfully', transaction, updatedUser });
+        const updatedCredits = updatedUser.credits;
+        res.status(200).json({ msg: 'Credit added successfully', transaction, updatedCredits });
     } catch (error) {
         next(error);
     }
