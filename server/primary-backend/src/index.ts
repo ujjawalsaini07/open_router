@@ -2,8 +2,6 @@ import "dotenv/config";
 import express from "express";
 import type { Server } from "node:http";
 import cookieParser from "cookie-parser";
-
-
 import {router as authRouter} from "./routes/authRoutes.ts"
 import {router as apiRouter } from "./routes/apiRoutes.ts";
 import {router as onrampRouter } from "./routes/transactionRoutes.ts";
@@ -12,6 +10,7 @@ import {router as companyRouter } from "./routes/companyRoutes.ts";
 import {router as modelRouter } from "./routes/modelRoutes.ts";
 import {router as modelProviderMappingRouter } from "./routes/modelProviderMappingRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
+import connectDB from "./config/dbConfig.ts";
 
 const port: number = Number(process.env.PORT) || 3000;
 const app = express();
@@ -41,10 +40,16 @@ app.get("/health", (req, res) => {
 
 app.use(errorHandler);
 
-const server: Server = app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+async function startServer(): Promise<void> {
+    await connectDB();
 
-server.on("error", (error) => {
-    console.error("Server error:", error);
-});
+    const server: Server = app.listen(port, () => {
+        console.log(`Server listening on port ${port}`);
+    });
+
+    server.on("error", (error) => {
+        console.error("Server error:", error);
+    });
+}
+
+startServer();

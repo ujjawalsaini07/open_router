@@ -1,0 +1,368 @@
+{
+  "info": {
+    "name": "primary-backend",
+    "_postman_id": "b6f2a9d0-6e0a-4b7a-9b1e-primary-backend",
+    "description": "API collection for the primary-backend service (server/primary-backend). Auth uses an httpOnly JWT cookie set by /auth/login and /auth/signup — Postman's cookie jar will attach it automatically to subsequent requests against {{baseUrl}} once you're logged in.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User (me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "api-keys",
+      "item": [
+        {
+          "name": "List Api Keys",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Api Key By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Api Key",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Api Key\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api",
+              "host": ["{{baseUrl}}"],
+              "path": ["api"]
+            }
+          }
+        },
+        {
+          "name": "Update Api Key",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Renamed Key\",\n  \"disabled\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Api Key",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "payments",
+      "item": [
+        {
+          "name": "Add Credit",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"amount\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/add-credit",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "add-credit"]
+            }
+          }
+        },
+        {
+          "name": "List Payment History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "providers",
+      "item": [
+        {
+          "name": "List Providers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/provider?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Provider By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/provider/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "companies",
+      "item": [
+        {
+          "name": "List Companies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["company"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Company By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "models",
+      "item": [
+        {
+          "name": "List Models",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/model?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["model"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Model By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/model/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["model", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "model-provider-mappings",
+      "item": [
+        {
+          "name": "List Model Provider Mappings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/model-provider-mapping?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["model-provider-mapping"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Model Provider Mappings (filtered by modelId)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/model-provider-mapping?page=1&pageSize=10&modelId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["model-provider-mapping"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" },
+                { "key": "modelId", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Model Provider Mapping By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/model-provider-mapping/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["model-provider-mapping", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
