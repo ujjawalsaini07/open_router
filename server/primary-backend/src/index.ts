@@ -9,6 +9,8 @@ import {router as apiRouter } from "./routes/apiRoutes.ts";
 import {router as onrampRouter } from "./routes/transactionRoutes.ts";
 import {router as providerRouter } from "./routes/providerRoutes.ts";
 import {router as companyRouter } from "./routes/companyRoutes.ts";
+import {router as modelRouter } from "./routes/modelRoutes.ts";
+import {router as modelProviderMappingRouter } from "./routes/modelProviderMappingRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 
 const port: number = Number(process.env.PORT) || 3000;
