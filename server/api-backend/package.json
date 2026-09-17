@@ -18,7 +18,8 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+     "openai": "^7.16.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
