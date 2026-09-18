@@ -33,7 +33,7 @@ export const checkAuthHeader = (req: Request, res: Response, next: NextFunction)
         });
     }
 
-    req.user!.apikey = apiKey;
+    req.user!.apiKey = apiKey;
     next();
 
 }

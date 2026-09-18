@@ -18,7 +18,7 @@ export const checkApiKey = async (req: Request, res: Response, next: NextFunctio
             return res.status(401).json({ msg: "Invalid api key" });
         }
 
-        req.user!.apikey = key.apiKey;
+        req.user!.apiKey = key.apiKey;
         next();
     } catch (error) {
         next(error);
