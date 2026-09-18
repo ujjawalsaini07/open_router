@@ -1,5 +1,4 @@
 .env
-prisma
 node_modules
 generated
 serverlogs.txt
