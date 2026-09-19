@@ -11,7 +11,8 @@ import {router as modelRouter } from "./routes/modelRoutes.ts";
 import {router as modelProviderMappingRouter } from "./routes/modelProviderMappingRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 import { requestLogger } from "./middleware/requestLogger.ts";
-import connectDB from "./config/dbConfig.ts";
+import connectDB, { prisma } from "./config/dbConfig.ts";
+import { seedPricing } from "@repo/db/seed";
 
 const port: number = Number(process.env.PORT) || 3000;
 const app = express();
@@ -44,6 +45,7 @@ app.use(errorHandler);
 
 async function startServer(): Promise<void> {
     await connectDB();
+    await seedPricing(prisma);
 
     const server: Server = app.listen(port, () => {
         console.log(`Server listening on port ${port}`);

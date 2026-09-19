@@ -14,7 +14,7 @@ if (!connectionString) {
 
 const adapter = new PrismaPg({ connectionString });
 
-export const prisma = new PrismaClient({ adapter });
+export const prisma: PrismaClient = new PrismaClient({ adapter });
 
 async function connectDB(): Promise<void> {
   let retries = MAX_RETRIES;

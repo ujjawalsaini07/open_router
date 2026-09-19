@@ -1,8 +1,13 @@
 {
   "name": "@repo/db",
   "version": "1.0.0",
+  "type": "module",
  "main": "generated/prisma/client.ts",
  "types": "generated/prisma/client.ts",
+  "exports": {
+    ".": "./generated/prisma/client.ts",
+    "./seed": "./seed.ts"
+  },
   "scripts": {
     "generate": "prisma generate",
     "migrate": "prisma migrate dev"
