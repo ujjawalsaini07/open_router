@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { z } from "zod";
 import { prisma } from "../config/dbConfig.ts";
-import { openAiService } from "../service/openaiservice.ts";
+import { getProviderService } from "../service/providerRegistry.ts";
 import type { ChatRequest, ChatResponse } from "../types/index.ts";
 
 const chatSchema = z.object({
@@ -42,11 +42,13 @@ export const chat = async (req: Request, res: Response, next: NextFunction): Pro
             return res.status(404).json({ msg: "User not found" });
         }
 
-        if (mapping.model.company.name !== "OpenAi") {
+        const providerService = getProviderService(mapping.model.company.name);
+
+        if (!providerService) {
             return res.status(400).json({ msg: "Model not supported yet" });
         }
 
-        const aiResponse = await openAiService({ model, messages });
+        const aiResponse = await providerService({ model, messages });
 
         const totalCreditCost =
             aiResponse.input_tokens * mapping.inputTokenCost +
