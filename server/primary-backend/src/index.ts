@@ -9,6 +9,7 @@ import {router as providerRouter } from "./routes/providerRoutes.ts";
 import {router as companyRouter } from "./routes/companyRoutes.ts";
 import {router as modelRouter } from "./routes/modelRoutes.ts";
 import {router as modelProviderMappingRouter } from "./routes/modelProviderMappingRoutes.ts";
+import {router as conversationRouter } from "./routes/conversationRoutes.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 import { requestLogger } from "./middleware/requestLogger.ts";
 import connectDB, { prisma } from "./config/dbConfig.ts";
@@ -34,6 +35,7 @@ app.use("/provider",providerRouter);
 app.use("/company", companyRouter);
 app.use("/model", modelRouter);
 app.use("/model-provider-mapping", modelProviderMappingRouter);
+app.use("/conversations", conversationRouter);
 
 app.get("/health", (req, res) => {
     res.status(200).json({
