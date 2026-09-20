@@ -32,3 +32,67 @@ export async function seedPricing(prisma: PrismaClient): Promise<void> {
         });
     }
 }
+
+interface NewModelSeed {
+    companyName: string;
+    companyWebsite: string;
+    providerName: string;
+    providerWebsite: string;
+    modelName: string;
+    modelSlug: string;
+    inputTokenCost: number;
+    outputTokenCost: number;
+}
+
+const newModels: NewModelSeed[] = [
+    {
+        companyName: "Groq",
+        companyWebsite: "https://groq.com/",
+        providerName: "Groq",
+        providerWebsite: "https://groq.com/",
+        modelName: "GPT OSS 120B",
+        modelSlug: "openai/gpt-oss-120b",
+        inputTokenCost: 0,
+        outputTokenCost: 1,
+    },
+];
+
+export async function seedNewModels(prisma: PrismaClient): Promise<void> {
+    for (const entry of newModels) {
+        let company = await prisma.company.findFirst({ where: { name: entry.companyName } });
+
+        if (!company) {
+            company = await prisma.company.create({
+                data: { name: entry.companyName, website: entry.companyWebsite },
+            });
+        }
+
+        let provider = await prisma.provider.findFirst({ where: { name: entry.providerName } });
+
+        if (!provider) {
+            provider = await prisma.provider.create({
+                data: { name: entry.providerName, website: entry.providerWebsite },
+            });
+        }
+
+        const model = await prisma.model.upsert({
+            where: { slug: entry.modelSlug },
+            update: { name: entry.modelName, companyId: company.id },
+            create: { name: entry.modelName, slug: entry.modelSlug, companyId: company.id },
+        });
+
+        await prisma.modelProviderMapping.upsert({
+            where: { modelId_providerId: { modelId: model.id, providerId: provider.id } },
+            update: {
+                inputTokenCost: entry.inputTokenCost,
+                outputTokenCost: entry.outputTokenCost,
+            },
+            create: {
+                modelId: model.id,
+                providerId: provider.id,
+                inputTokenCost: entry.inputTokenCost,
+                outputTokenCost: entry.outputTokenCost,
+            },
+        });
+    }
+}

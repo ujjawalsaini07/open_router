@@ -12,14 +12,15 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
-    "@repo/db": "*",
     "@prisma/adapter-pg": "^7.10.0",
+    "@repo/db": "*",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "groq-sdk": "^1.6.0",
     "jsonwebtoken": "^9.0.3",
-    "zod": "^4.4.3",
-     "openai": "^7.16.0"
+    "openai": "^7.16.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -29,5 +30,4 @@
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
   }
-
 }
